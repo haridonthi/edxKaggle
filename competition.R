@@ -3,7 +3,7 @@
 # pick top x variables using importance(rf) / varImpPlot(rf)
 # had higher AUC than random forest on all vars with 30% split on train data
 # But, performed worse on Kaggle than plain random forest on all vars
-
+# model was overfit, remove some predictors?
 
 #clear session
 rm(list = ls())
@@ -29,23 +29,24 @@ colnames(DescriptionWordsTrain2)[13]="condition2"
 eBayTrain3=cbind(eBayTrain2,DescriptionWordsTrain2)
 
 #Split Training data: eBayTrain3 into Traintrain & Traintest
-# set.seed(123)
+## set.seed(123)
 # spl = sample.split(eBayTrain3$sold,SplitRatio = 0.7)
 # eBayTraintrain = subset(eBayTrain3, spl==TRUE)
 # eBayTraintest = subset(eBayTrain3, spl==FALSE)
 # eBayTraintrain$description = NULL
 # eBayTraintest$description = NULL
-## end eval auc
+# eBayTest=eBayTraintest
+## end training
 
 eBayTraintrain = eBayTrain3
 eBayTraintrain$description=NULL
 #create dataframe of category vars and randomForest
 trainDiscreteVars = eBayTraintrain[,1:10]
-rf1 = randomForest(sold~biddable+startprice+productline+condition+color,data=trainDiscreteVars)
+rf1 = randomForest(sold~biddable+startprice,data=trainDiscreteVars)
 
 #create dataframe of text vars and randomForest
 trainTextVars = eBayTraintrain[,-1:-8]
-rf2 = randomForest(sold~ X100+scratch+ipad+screen+work+condition2+use+condit+good+great+hous+veri+item+used+test,data=trainTextVars)
+rf2 = randomForest(sold~ X100+scratch+ipad+screen+screen+use+condit,data=trainTextVars)
 
 #Compute test values & submit
 eBayTest2 = read.csv("eBayiPadTest.csv") #without stringsAsFactors=FALSE
