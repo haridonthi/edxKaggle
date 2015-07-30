@@ -63,9 +63,10 @@ Predrf2 = predict(rf2,newdata=eBayTest, type="prob")[,2]
 # validation start - used for testing when splitting training
 # Predrf1 = predict(rf1,newdata=eBayTraintest, type="prob")[,2]
 # Predrf2 = predict(rf2,newdata=eBayTraintest, type="prob")[,2]
-# ROCRrf = prediction(((.9*Predrf1)+(.1*Predrf2))/2,eBayTraintest$sold)
+# ROCRrf = prediction(((.6*Predrf1)+(.4*Predrf2))/2,eBayTraintest$sold)
 # rf.auc = as.numeric(performance(ROCRrf,"auc")@y.values)
+# rf.auc
 # validation end
 
-MySubmissionrf = data.frame(UniqueID = eBayTest2$UniqueID, Probability1 = ((.9*Predrf1)+(.1*Predrf2)/2))
+MySubmissionrf = data.frame(UniqueID = eBayTest2$UniqueID, Probability1 = ((.5*Predrf1)+(.5*Predrf2)/2))
 write.csv(MySubmissionrf, "rf.csv", row.names=FALSE)
